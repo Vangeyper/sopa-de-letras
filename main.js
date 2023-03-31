@@ -14,43 +14,6 @@ let casillaSeleccionada = undefined;
 /*  FUNCIONES PRINCIPALES  */
 /* ----------------------- */
 
-/**
- * Dibuja un tablero lleno de botones con las dimensiones especificadas en ancho x alto
- * @param {HTMLDivElement} element 
- * @param {Number} alto 
- * @param {Number} ancho 
- * @param {Array<Array<String>>} valores
- * @returns {Array<Array<String>>} devuelve una matriz con los elementos del tablero, ya sean letras o números
- */
-const dibujarTablero = ( element, ancho, alto, valores ) => {
-
-  let html = "";
-  let elementos = [];
-
-  console.log('Dibujamos Tablero');
-  html = `
-    <table class="tablero">      
-  `;
-  for ( let y = 1; y < alto; y++ ) {
-    html = html + '<tr class="filaTablero">';
-    for( let x = 1; x < ancho; x++ ) {    
-      let valor = valores[x][y];
-      html = html + `
-        <td class="columnaTablero">
-          <div id="elem${x}_${y}" class="casilla">
-            <span class="botonCasilla">${valor}</span>
-          </div>
-        </td>
-      `;
-      elementos[x,y] = valor;
-    }
-    html = html + '</tr>';
-  }
-  html = html + '</table>';
-
-  element.innerHTML = html;
-  return elementos;
-}
 
 
 /**
@@ -117,22 +80,7 @@ const dibujarLista = async( element, numero, eTipo, min, max ) => {
 /*  FUNCIONES SECUNDARIAS  */
 /* ----------------------- */
 
-/**
- * Obtiene un entero aleatoriamente entre los números inferior y superior
- * @param {Number} inferior 
- * @param {Number} superior 
- * @returns {Number} número entero entre el intervalo: inferior y superior
- */
-const aleatorio = (inferior, superior) => {
 
-  const numPosibilidades = Number(superior) - Number(inferior);
-  const aleat = Math.random();
-  let aleatorio = aleat * (Number(numPosibilidades) + 1);
-  aleatorio = Math.trunc(Math.floor(aleatorio));
- 
-  return Number(inferior) + Number(aleatorio);
-
-}
 
 
 /**
@@ -344,7 +292,7 @@ const aplicarMarcadoPalabraCorrecta = () => {
   var seleccionados = document.getElementsByClassName("botonCasillaSeleccion");
   
   console.log(seleccionados.length);
-  for (var i = 0; i<seleccionados.length; i++) {
+  for (let i = seleccionados.length - 1; i >= 0; i--) {
     console.log(seleccionados[i]);
     seleccionados[i].classList.add("botonCasillaAcertada");
     seleccionados[i].classList.remove("botonCasillaSeleccion");
@@ -357,8 +305,14 @@ const aplicarMarcadoPalabraCorrecta = () => {
  */
 const desmarcarSeleccionados = () => {
 
-  var seleccionados = document.getElementsByClassName("botonCasillaSeleccion");
-  for (var i = 0; i<=seleccionados.length; i++) {
+  console.log('descamarcar');
+  var seleccionados = document.getElementsByClassName("botonCasillaSeleccion");  
+  if (!seleccionados) return;
+  console.log( 'seleccionados a desmarcar : ' + seleccionados.length );
+  console.log( seleccionados[0], seleccionados[1], seleccionados[2] );
+  console.log( seleccionados[0].parentElement, seleccionados[1].parentElement, seleccionados[2].parentElement );
+  for (let i = seleccionados.length - 1; i >= 0; i--) {
+    console.log( 'desmarcamos ' + seleccionados[i].parentElement.id );
     seleccionados[i].classList.remove("botonCasillaSeleccion");
   }
 }
@@ -373,6 +327,16 @@ const marcarPalabra = ( inicioID, finalID ) => {
 
   let palabra = '';
 
+  console.log( 'marcarPalabra' );
+  var seleccionados = document.getElementsByClassName("botonCasillaSeleccion");
+  console.log( 'seleccionados : ' + seleccionados.length );
+
+  if (seleccionados) {
+    for (var i = 0; i<seleccionados.length; i++) {
+      console.log( seleccionados[i].parentElement.id );
+    }
+  }  
+
   const finalx1 = inicioID.indexOf( '_' );
   const x1 = inicioID.substring( 4, finalx1 );
   const y1 = inicioID.substring( finalx1 + 1 );
@@ -382,8 +346,9 @@ const marcarPalabra = ( inicioID, finalID ) => {
   const y2 = finalID.substring( finalx2 + 1 );
 
   if ( isPalabraHorizontal( x1, y1, x2, y2 ) ) {
-    palabra = marcarPalabraHorizontal( x1, y1, x2, y2 );    
-    //console.log(x1 + ',' + y1 + ' - ' + x2 + ',' + y2 + 'es horizontal');
+    console.log('marcamos palabra horizontal');
+    console.log('( ' + x1 + ',' + y1 + ' - ' + x2 + ',' + y2 + ' ) es horizontal');
+    palabra = marcarPalabraHorizontal( x1, y1, x2, y2 );        
   }
   if ( isPalabraVertical( x1, y1, x2, y2 ) ) {
     marcarPalabraVertical( x1, y1, x2, y2 );
@@ -396,16 +361,16 @@ const marcarPalabra = ( inicioID, finalID ) => {
 
   // comprobar si existe la palabra
   console.log({palabra});
-  // for (let i = 0; i < listaPalabras.length; i++) {    
-  //   console.log(listaPalabras[i].getPalabra());
-  //   if( palabra === listaPalabras[i].getPalabra() ) {
-  //     aplicarMarcadoPalabraCorrecta();
-  //     return;
-  //   }
-  // }
+  for (let i = 0; i < listaPalabras.length; i++) {    
+    console.log(listaPalabras[i].getPalabra());
+    if( palabra === listaPalabras[i].getPalabra() ) {
+      aplicarMarcadoPalabraCorrecta();
+      alert('marcado');
+      return;
+    }
+  }
   
-  aplicarMarcadoPalabraCorrecta();
-  //desmarcarSeleccionados();
+  desmarcarSeleccionados();
   
 }
 
@@ -426,7 +391,7 @@ const tableroSelectListener = ( event ) => {
   // seleccionamos la casilla inicial o la final
   if( casillaSeleccionada ) {
     // marcamos el final de la palabra
-    element.firstElementChild.classList.toggle('botonCasillaSeleccion');
+    //element.firstElementChild.classList.toggle('botonCasillaSeleccion');
     marcarPalabra( casillaSeleccionada, id );
     // marcamos/tachamos las letras intermedias si la palabra es correcta
     casillaSeleccionada = undefined;

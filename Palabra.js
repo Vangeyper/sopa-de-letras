@@ -1,4 +1,5 @@
-import { eTipoSopa } from "./tipos";
+import { eTipoSopa, eTipoDireccion } from "./tipos";
+import { Coordenada } from "./Coordenada";
 
 
 
@@ -10,20 +11,18 @@ class Palabra {
 
     marcada = false; // creamos una propiedad con el modificar static para indicarle que es estática
 
-    tipo = eTipoSopa.LETRAS;
     contenido = ''; // palabra concreta
+    ubicacionLetraInicial = new Coordenada( 0, 0 );    
     
     // -------------------
     // CONSTRUCTORES
     // -------------------
 
-    constructor ( palabra = '', tipo = eTipoSopa.LETRAS ) {
+    constructor ( palabra = '' ) {
         // incializamos las variables 
         this.contenido = palabra;
-        this.tipo = tipo;
         this.marcada = false;
-    }
-
+    }   
 
     // -------------------
     // Setters y Getters
@@ -55,6 +54,17 @@ class Palabra {
     // Methods
     // -------------------
     
+    /**
+     * Indica la ubicación de la palabra en unas coordenadas de tablero
+     * @param {Number} xInicial 
+     * @param {Number} yInicial 
+     * @param {eTipoDireccion} direccion 
+     */
+    ubicar ( xInicial, yInicial, direccion ) {
+        this.ubicacionLetraInicial = new Coordenada( xInicial, yInicial );
+        this.direccionPalabra = direccion;
+    }
+
 }
 
 
