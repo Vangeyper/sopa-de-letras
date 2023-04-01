@@ -16,5 +16,20 @@ export class Coordenada {
         this.posicionY = y;
     }
 
+
+    /**
+     * @returns {Number}
+     */
+     get getX(){
+        return this.posicionX;
+    }
+
+    /**
+     * @returns {Number}
+     */
+    get getY(){
+        return this.posicionY;
+    }
+
 }
 

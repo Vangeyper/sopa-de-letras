@@ -1,6 +1,7 @@
 import './style.css';
 import { eTipoSopa } from './tipos';
 import { Palabra } from './Palabra';
+import { Tablero } from './Tablero';
 
 
 /* ----------------------- */
@@ -453,10 +454,10 @@ const generarTablero = ( ancho, alto, tipo ) => {
 /* ------------------------ */
 
 const valoresTablero = generarTablero( 13, 13, eTipoSopa.NUMEROS );
-
-// llamamos a la función
+const tablero = new Tablero( 13, 13, eTipoSopa.LETRAS );
 const element = document.querySelector( '#tablero' );
-dibujarTablero( element, 13, 13, valoresTablero );
+tablero.dibujarTablero( element );
+
 
 const elementLista = document.querySelector( '#palabras' );
 
@@ -466,5 +467,5 @@ const listaPalabras = dibujarLista( elementLista, 10, eTipoSopa.NUMEROS, 1000000
 // })
 
 
-const tablero = document.querySelector( '#tablero' );
-tablero.addEventListener('click', ( event ) => tableroSelectListener( event ));
+//const tablero = document.querySelector( '#tablero' );
+//tablero.addEventListener('click', ( event ) => tableroSelectListener( event ));
