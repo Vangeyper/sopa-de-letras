@@ -2,6 +2,7 @@ import './style.css';
 import { eTipoSopa } from './tipos';
 import { Palabra } from './Palabra';
 import { Tablero } from './Tablero';
+import { aleatorio } from './utiles';
 
 
 /* ----------------------- */
@@ -17,60 +18,6 @@ let casillaSeleccionada = undefined;
 
 
 
-/**
- * Calcula aleatoriamente una lista de palabras o números y la devuelve en un array
- * @param {HTMLDivElement} element 
- * @param {Number} numero número de palabras
- * @param {eTipoSopa} eTipo indica el tipo de palabras: normales, números, ... según un enumerado
- * @param {Number} min número mínimo de la lista 
- * @param {Number} max número máximo de la lista
- * @returns {Array<Palabra>} array con la lista de palabras buscada
- */
-const dibujarLista = async( element, numero, eTipo, min, max ) => {
-
-  let listaElementos = [];
-
-  let html = '<table class="lista">';
-  
-  for (let i = 1; i <= numero; i++) {
-    if ( eTipo === eTipoSopa.NUMEROS ) {
-      const newNumero = aleatorio(min, max);
-      const newPalabra = new Palabra(newNumero, eTipo);
-      listaElementos.push( newPalabra );          
-
-      html = html + `<tr class="filaPalabras">
-        <td class="columnaPalabras">${ newNumero }</td>
-      </tr>
-      `;
-    }
-    if ( eTipo === eTipoSopa.LETRAS ) {
-      nuevasPalabras( 10 ).then( listaPalabras => {
-        console.log(listaPalabras);
-        for ( let n = 0; n < numero; n++ ) {
-          console.log( listaPalabras[n] );
-          //console.log( html );
-
-          const newPalabra = new Palabra(listaPalabras[n], eTipo);
-          listaElementos.push( newPalabra );          
-          html = html + '<tr class="filaPalabras"><td class="columnaPalabras">' + listaPalabras[n] + '</td></tr>';
-          //console.log( html );
-        };
-        html = html + '</table>';
-        element.innerHTML = html;
-      });                  
-      break;      
-    }    
-  }
-
-  if ( eTipo === eTipoSopa.NUMEROS ) {
-    html = html + '</table>';
-    element.innerHTML = html;
-  }
-
-  
-  return listaElementos;
-
-}
 
 
 
@@ -84,23 +31,7 @@ const dibujarLista = async( element, numero, eTipo, min, max ) => {
 
 
 
-/**
- * Devuelve un array de palabras formado por tantas palabras como se indique en el parámetro numeroPalabras
- * @param {Number} numeroPalabras 
- * @returns {Array<String>} Nuevas palabras
- */
-const nuevasPalabras = async( numeroPalabras ) => {
 
-  let listaPalabras = [];
-  
-  const url = `https://clientes.api.greenborn.com.ar/public-random-word?c=${numeroPalabras}`;
-  const res = await fetch( url );
-
-  listaPalabras = res.json();
-  
-  return listaPalabras;
-
-}
 
 
 /**
@@ -454,6 +385,7 @@ const generarTablero = ( ancho, alto, tipo ) => {
 /* ------------------------ */
 
 const valoresTablero = generarTablero( 13, 13, eTipoSopa.NUMEROS );
+
 const tablero = new Tablero( 13, 13, eTipoSopa.LETRAS );
 const element = document.querySelector( '#tablero' );
 tablero.dibujarTablero( element );

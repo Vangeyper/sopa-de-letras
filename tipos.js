@@ -24,6 +24,5 @@ const eTipoDireccion = Object.freeze({
 
   export {
     eTipoSopa,
-    eTipoUbicacion,
     eTipoDireccion
   };

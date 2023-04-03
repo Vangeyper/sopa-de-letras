@@ -3,8 +3,8 @@
 
 export class Coordenada {
 
-    posicionX = 0;
-    posicionY = 0;
+    #posicionX = 0;
+    #posicionY = 0;
 
     /**
      * Constructor de una Coordenada 
@@ -12,8 +12,8 @@ export class Coordenada {
      * @param {Number} y 
      */
     constructor ( x, y ) {
-        this.posicionX = x;
-        this.posicionY = y;
+        this.#posicionX = x;
+        this.#posicionY = y;
     }
 
 
@@ -21,14 +21,14 @@ export class Coordenada {
      * @returns {Number}
      */
      get getX(){
-        return this.posicionX;
+        return this.#posicionX;
     }
 
     /**
      * @returns {Number}
      */
     get getY(){
-        return this.posicionY;
+        return this.#posicionY;
     }
 
 }
