@@ -12,15 +12,38 @@ export class ListaPalabras {
     /**
      * Crea la lista de palabras según el tipo y número
      * @param {eTipoSopa} tipo de tablero: numero, letras, mixto
-     * @param {Number} numero de palabras
      */
-    constructor ( tipo, numero ) {
+    constructor ( tipo ) {
 
         this.#lista = [];
         this.#marcadas = [];
         this.#tipo = tipo;
 
-        this.#lista = this.generarLista( numero );
+    }
+
+
+    get numeroPalabras() {
+
+        return this.#lista.length;
+
+    }
+
+
+    /**
+     * Obtiene el elemento de la lista por su indice
+     * @param {Number} posicion 
+     * @returns {String} elemento de la lista
+     */
+    obtenerElementoPorPosicion( posicion ) {
+
+        console.log(`obtenerElementoPorPosicion(${posicion})`);
+        console.log('de lista: ' + this.#lista);
+        console.log('this.#lista.length: ' + this.#lista.length);
+        if( this.#lista.length >= posicion ) {
+            console.log('ELEMENTO : this.#lista[posicion]: ' + this.#lista[posicion]);
+            return this.#lista[posicion];
+        }
+        return undefined
 
     }
 
@@ -30,7 +53,7 @@ export class ListaPalabras {
      * @param {String} palabra 
      * @returns {ListaPalabras} nueva lista
      */
-    addPalabra( palabra ) {
+    #addPalabra( palabra ) {
 
         this.#lista.push ( palabra );
 
@@ -42,7 +65,7 @@ export class ListaPalabras {
      * @param {String} palabra 
      * @returns {ListaPalabras} nueva lista
      */
-    removePalabra( palabra ) {
+    #removePalabra( palabra ) {
 
         this.#lista = this.#lista.filter ( element => element != palabra );
 
@@ -95,12 +118,12 @@ export class ListaPalabras {
      * @param {HTMLDivElement} element 
      * @returns {HTMLDivElement} elemento refrescado
      */
-    dibujarLista = async( element ) => {
+    dibujarLista = ( element ) => {
 
         let html = '<table class="lista">';
         
-        for (let i = 1; i <= this.#lista.length; i++) {
-            html = html + '<tr class="filaPalabras"><td class="columnaPalabras">' + lista[n] + '</td></tr>';
+        for (let i = 0; i < this.#lista.length; i++) {
+            html = html + '<tr class="filaPalabras"><td class="columnaPalabras">' + this.#lista[i] + '</td></tr>';
         };
 
         html = html + '</table>';
@@ -111,6 +134,10 @@ export class ListaPalabras {
     }
   
 
+
+
+
+
     /**
      * Genera aleatoriamente la lista de palabras o números y la establece internamente en este objeto
      * @param {Number} numero número de elementos a generar
@@ -118,28 +145,34 @@ export class ListaPalabras {
      * @param {Number} max número máximo de la lista (solo para los tipos de sopas de números)
      * @returns {ListaPalabras} lista de palabras buscada
      */
-    generarLista = async( numero, min = 100000000, max = 999999999 ) => {
-
+    generarLista = ( numero, min = 100000000, max = 999999999 ) => {
+        
+        console.log( 'generarLista()' );
+        console.log( 'tipo: ' + this.#tipo );
+        console.log( 'numero de palabras: ' + numero );
         this.#lista = [];
         this.#marcadas = [];
     
         for (let i = 1; i <= numero; i++) {
-            if ( this.#tipo === eTipoSopa.NUMEROS ) {
+            if ( this.#tipo === eTipoSopa.NUMEROS ) {                
                 const newNumero = aleatorio(min, max);
-                this.#lista.addPalabra( newNumero );
+                console.log({newNumero, min, max});
+                console.log('addPalabra: ' + newNumero);
+                this.#addPalabra( newNumero );
+                console.log('lista: ' + this.#lista);
             }
-            if ( this.#tipo === eTipoSopa.LETRAS ) {
-                nuevasPalabras( numero ).then( listaPalabras => {
-                    console.log(listaPalabras);
-                    for ( let n = 0; n < numero; n++ ) {
-                        console.log( listaPalabras[n] );
+            // if ( this.#tipo === eTipoSopa.LETRAS ) {
+            //     nuevasPalabras( numero ).then( listaPalabras => {
+            //         console.log(listaPalabras);
+            //         for ( let n = 0; n < numero; n++ ) {
+            //             console.log( listaPalabras[n] );
             
-                        const newPalabra = new Palabra(listaPalabras[n], eTipo);
-                        this.#lista.addPalabra( newPalabra );          
-                    };
-                });                  
-                break;      
-            }    
+            //             const newPalabra = new Palabra(listaPalabras[n], eTipo);
+            //             this.#lista.#addPalabra( newPalabra );          
+            //         };
+            //     });                  
+            //     break;      
+            // }    
         }
     
         return this;

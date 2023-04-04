@@ -1,9 +1,11 @@
 import './style.css';
 import { eTipoSopa } from './tipos';
-import { Palabra } from './Palabra';
-import { Tablero } from './Tablero';
 import { aleatorio } from './utiles';
+import { Juego } from './Juego';
 
+
+import { ListaPalabras } from './ListaPalabras';
+import { Tablero } from './Tablero';
 
 /* ----------------------- */
 /* CONSTANTES y ENUMERADOS */
@@ -352,9 +354,9 @@ const generarTablero = ( ancho, alto, tipo ) => {
   if ( tipo === eTipoSopa.LETRAS ) {
     const abc = 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,ñ,o,p,q,r,s,t,u,v,w,x,y,z';
     const letras = abc.split(',');
-    for ( let y = 1; y <= alto; y++ ) {
+    for ( let y = 0; y < alto; y++ ) {
       lineaJuego = [];
-      for ( let x = 1; x <= ancho; x++) {
+      for ( let x = 0; x < ancho; x++) {
         const newIndice = aleatorio( 0, letras.length - 1 );
         lineaJuego.push( letras[newIndice] );
       }
@@ -365,9 +367,9 @@ const generarTablero = ( ancho, alto, tipo ) => {
   }
 
   if ( tipo === eTipoSopa.NUMEROS ) {        
-    for ( let y = 1; y <= alto; y++ ) {
+    for ( let y = 0; y < alto; y++ ) {
       lineaJuego = [];
-      for ( let x = 1; x <= ancho; x++) {
+      for ( let x = 0; x < ancho; x++) {
         const newNumero = aleatorio(0, 9);
         lineaJuego.push( newNumero );
       }
@@ -384,16 +386,25 @@ const generarTablero = ( ancho, alto, tipo ) => {
 /*  EJECUCIÓN DE FUNCIONES  */
 /* ------------------------ */
 
-const valoresTablero = generarTablero( 13, 13, eTipoSopa.NUMEROS );
-
-const tablero = new Tablero( 13, 13, eTipoSopa.LETRAS );
-const element = document.querySelector( '#tablero' );
-tablero.dibujarTablero( element );
-
-
 const elementLista = document.querySelector( '#palabras' );
+const elementTablero = document.querySelector( '#tablero' );
 
-const listaPalabras = dibujarLista( elementLista, 10, eTipoSopa.NUMEROS, 100000000, 999999999 );
+
+
+let listaPalabras = new ListaPalabras( eTipoSopa.NUMEROS );      
+listaPalabras = listaPalabras.generarLista( 10 );
+listaPalabras.dibujarLista ( elementLista );
+let tablero = new Tablero( 13, 13, eTipoSopa.NUMEROS );
+tablero = tablero.ubicarListaPalabras( listaPalabras, 6, 4 );
+
+
+/*
+const juego = new Juego( 15, 15, eTipoSopa.NUMEROS, 10, 5, 5 );
+*/
+listaPalabras.dibujarLista ( elementLista );
+tablero.dibujarTablero( elementTablero );
+
+
 // nuevasPalabras( 1 ).then( listaPalabras => {
 //   console.log( listaPalabras[0] );
 // })

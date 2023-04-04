@@ -31,5 +31,13 @@ export class Coordenada {
         return this.#posicionY;
     }
 
+    setX( value ) {
+        this.#posicionX = value;
+    }
+
+    setY( value ) {
+        this.#posicionY = value;
+    }
+
 }
 

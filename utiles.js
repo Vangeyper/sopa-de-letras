@@ -8,12 +8,13 @@
  */
 export const aleatorio = (inferior, superior) => {
 
+    console.log(`aleatorio = (${inferior}, ${superior})`);
     const numPosibilidades = Number(superior) - Number(inferior);
     const aleat = Math.random();
     let aleatorio = aleat * (Number(numPosibilidades) + 1);
     aleatorio = Math.trunc(Math.floor(aleatorio));
    
-    return Number(inferior) + Number(aleatorio);
+    return String(Number(inferior) + Number(aleatorio));
   
 }
 
