@@ -310,33 +310,33 @@ const marcarPalabra = ( inicioID, finalID ) => {
 
 
 
-/**
- * Trata el evento del Select al clickear en la tabla (Select)
- * @param {MouseEvent} event 
- */
-const tableroSelectListener = ( event ) => {
+// /**
+//  * Trata el evento del Select al clickear en la tabla (Select)
+//  * @param {MouseEvent} event 
+//  */
+// const tableroSelectListener = ( event ) => {
 
-  const element = event.target.closest('.casilla');
-  if ( !element ) return;  
+//   const element = event.target.closest('.casilla');
+//   if ( !element ) return;  
 
-  // si tenemos el click correspondiente al Select cogemos el data-id:
-  const id = element.getAttribute('id');
+//   // si tenemos el click correspondiente al Select cogemos el data-id:
+//   const id = element.getAttribute('id');
   
-  // seleccionamos la casilla inicial o la final
-  if( casillaSeleccionada ) {
-    // marcamos el final de la palabra
-    //element.firstElementChild.classList.toggle('botonCasillaSeleccion');
-    marcarPalabra( casillaSeleccionada, id );
-    // marcamos/tachamos las letras intermedias si la palabra es correcta
-    casillaSeleccionada = undefined;
-  }
-  else {
-    // iniciamos palabra
-    casillaSeleccionada = id;
-    // marcamos el inicio de palabra
-    element.firstElementChild.classList.toggle('botonCasillaSeleccion');
-  }
-}
+//   // seleccionamos la casilla inicial o la final
+//   if( casillaSeleccionada ) {
+//     // marcamos el final de la palabra
+//     //element.firstElementChild.classList.toggle('botonCasillaSeleccion');
+//     marcarPalabra( casillaSeleccionada, id );
+//     // marcamos/tachamos las letras intermedias si la palabra es correcta
+//     casillaSeleccionada = undefined;
+//   }
+//   else {
+//     // iniciamos palabra
+//     casillaSeleccionada = id;
+//     // marcamos el inicio de palabra
+//     element.firstElementChild.classList.toggle('botonCasillaSeleccion');
+//   }
+// }
 
 
 /**
@@ -386,23 +386,23 @@ const generarTablero = ( ancho, alto, tipo ) => {
 /*  EJECUCIÓN DE FUNCIONES  */
 /* ------------------------ */
 
-const elementLista = document.querySelector( '#palabras' );
-const elementTablero = document.querySelector( '#tablero' );
+// const elementLista = document.querySelector( '#palabras' );
+// const elementTablero = document.querySelector( '#tablero' );
 
 
 
-let listaPalabras = new ListaPalabras( eTipoSopa.NUMEROS );      
-listaPalabras = listaPalabras.generarLista( 10 );
-listaPalabras.dibujarLista ( elementLista );
-let tablero = new Tablero( 13, 13, eTipoSopa.NUMEROS );
-tablero = tablero.ubicarListaPalabras( listaPalabras, 6, 4 );
+// let listaPalabras = new ListaPalabras( eTipoSopa.NUMEROS );      
+// listaPalabras = listaPalabras.generarLista( 12 );
+// listaPalabras.dibujarLista ( elementLista );
+// let tablero = new Tablero( 20, 20, eTipoSopa.NUMEROS );
+// tablero = tablero.ubicarListaPalabras( listaPalabras, 4, 4 );
 
 
-/*
-const juego = new Juego( 15, 15, eTipoSopa.NUMEROS, 10, 5, 5 );
-*/
-listaPalabras.dibujarLista ( elementLista );
-tablero.dibujarTablero( elementTablero );
+const elementJuego = document.querySelector( '#juego' );
+const juego = new Juego( 20, 20, eTipoSopa.NUMEROS, 12, 4, 4, document );
+
+// listaPalabras.dibujarLista ( elementLista );
+// tablero.dibujarTablero( elementTablero );
 
 
 // nuevasPalabras( 1 ).then( listaPalabras => {
@@ -411,4 +411,4 @@ tablero.dibujarTablero( elementTablero );
 
 
 //const tablero = document.querySelector( '#tablero' );
-//tablero.addEventListener('click', ( event ) => tableroSelectListener( event ));
+// elementTablero.addEventListener('click', ( event ) => tableroSelectListener( event ));

@@ -1,3 +1,4 @@
+import { Coordenada } from "./Coordenada";
 
 
 /**
@@ -34,5 +35,36 @@ export const nuevasPalabras = async( numeroPalabras ) => {
     listaPalabras = res.json();
     
     return listaPalabras;
+  
+  }
+
+
+
+  /**
+   * Indica true si la palabra formada por los puntos indicados es horizontal, es decir estan en la misma altura. No pueden ser el mismo punto, en ese caso devuelve falso
+   * @param {Coordenada} miPto1 
+   * @param {Coordenada} miPto2 
+   * @returns {Boolean}
+   */
+  export const isPalabraHorizontal = ( miPto1, miPto2 ) => {
+
+    if ( miPto1.getY === miPto2.getY && miPto1.getX != miPto2.getX )
+      return true;
+    return false;
+  
+  }
+
+
+  /**
+   * Indica true si la palabra formada por los puntos indicados es vertical, es decir estan en la misma x. No pueden ser el mismo punto, en ese caso devuelve falso
+   * @param {Coordenada} miPto1 
+   * @param {Coordenada} miPto2 
+   * @returns {Boolean}
+   */
+  export const isPalabraVertical = ( miPto1, miPto2 ) => {
+
+    if ( miPto1.getY != miPto2.getY && miPto1.getX === miPto2.getX )
+      return true;
+    return false;
   
   }

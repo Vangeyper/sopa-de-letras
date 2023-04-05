@@ -7,17 +7,19 @@ export class ListaPalabras {
     #lista;
     #marcadas;
     #tipo;
+    #elementLista;
 
 
     /**
      * Crea la lista de palabras según el tipo y número
      * @param {eTipoSopa} tipo de tablero: numero, letras, mixto
      */
-    constructor ( tipo ) {
+    constructor ( tipo, elementLista ) {
 
         this.#lista = [];
         this.#marcadas = [];
         this.#tipo = tipo;
+        this.#elementLista = elementLista;
 
     }
 
@@ -97,39 +99,60 @@ export class ListaPalabras {
 
 
     /**
-     * Valida si una palabra existe en nuestra lista y no está marcada
+     * Valida si una palabra existe en nuestra lista y no está marcada. Tiene en cuenta el inverso de la palabra.
      * @param {String} palabra 
      * @returns {boolean} indica si existe la palabra dentro de nuestra lista y no está marcada
      */
     validarPalabra ( palabra ) {
 
-        const misPalabras = this.#lista.filter( element => element == palabra );
-        if ( !misPalabras ) return false;
+        const palabraInv = palabra.split("").reverse().join("");
 
-        const misPalabrasMarcadas = this.#marcadas.filter( element => element == palabra );
-        if ( !misPalabrasMarcadas ) return true;
+        const misPalabras = this.#lista.filter( element => (element == palabra || element == palabraInv));
+        if ( !misPalabras || misPalabras.length === 0 ) return false;
+
+        const misPalabrasMarcadas = this.#marcadas.filter( element => (element == palabra || element == palabraInv) );
+        if ( !misPalabrasMarcadas || misPalabrasMarcadas.length === 0 ) return true;
         return false;
 
     }
 
 
     /**
+     * Será cierto cuando la palabra esté en la lista de acertadas o marcadas
+     * @param {String} palabra 
+     * @returns {Boolean} 
+     */
+    #isAcertada ( palabra ) {
+
+        const palabraInv = palabra.split("").reverse().join("");
+
+        const misPalabrasMarcadas = this.#marcadas.filter( element => (element == palabra || element == palabraInv) );
+        if ( !misPalabrasMarcadas || misPalabrasMarcadas.length === 0 ) return false;
+        return true;
+
+    }
+
+    /**
      * Dibuja en un elemento html la lista de palabras
-     * @param {HTMLDivElement} element 
      * @returns {HTMLDivElement} elemento refrescado
      */
-    dibujarLista = ( element ) => {
+    dibujarLista = () => {
 
-        let html = '<table class="lista">';
+        let html = '<div class="lista">';
         
         for (let i = 0; i < this.#lista.length; i++) {
-            html = html + '<tr class="filaPalabras"><td class="columnaPalabras">' + this.#lista[i] + '</td></tr>';
+            if (this.#isAcertada( this.#lista[i] )) {
+                html = html + '<div class="filaPalabraAcertada"><div class="columnaPalabras">' + this.#lista[i] + '</div></div>';
+            }
+            else {
+                html = html + '<div class="filaPalabras"><div class="columnaPalabras">' + this.#lista[i] + '</div></div>';
+            }
         };
 
-        html = html + '</table>';
-        element.innerHTML = html;
+        html = html + '</div>';
+        this.#elementLista.innerHTML = html;
                
-        return element;
+        return this.#elementLista;
     
     }
   

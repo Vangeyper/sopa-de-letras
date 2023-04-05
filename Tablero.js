@@ -12,21 +12,28 @@ export class Tablero {
     #dimensionY;
     #tipologia;
     #valores;
+    #elementTablero;
     
     /**
      * Crea un tablero con las dimensiones especificadas y el tipo
      * @param {Number} dimX 
      * @param {Number} dimY 
      * @param {eTipoSopa} tipo 
+     * @param {HTMLDivElement} elementTablero será el div en el que dibujaremos el tablero
      */
-    constructor ( dimX, dimY, tipo ) {
+    constructor ( dimX, dimY, tipo, elementTablero ) {
         this.#dimensionX = dimX;
         this.#dimensionY = dimY;
-        this.#tipologia = tipo;  
+        this.#tipologia = tipo; 
+        this.#elementTablero = elementTablero; 
         this.inicializarTablero();
     }
 
 
+    /**
+     * incializa el tablero 
+     * @param {String} valor 
+     */
     inicializarTablero( valor = RELLENO ) {
 
         this.#valores = [];
@@ -57,41 +64,62 @@ export class Tablero {
             case eTipoDireccion.HORIZONTAL_DER:
                 do {
                     const letra = palabra[i];
-                    isPosible = (this.#valores[x+i,y] === RELLENO) || (this.#valores[x+i,y] === letra);
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x+i] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x+i] === letra);
                     i++;
                 } while( i<palabra.length && isPosible )
                 break;
             case eTipoDireccion.HORIZONTAL_IZQ:
                 do {
                     const letra = palabra[i];
-                    isPosible = (this.#valores[x-i,y] === RELLENO) || (this.#valores[x-i,y] === letra);
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x-i] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x-i] === letra);
                     i++;
                 } while( i<palabra.length && isPosible )
                 break;
             case eTipoDireccion.VERTICAL_ABA:
                 do {
                     const letra = palabra[i];
-                    isPosible = (this.#valores[x,y+i] === RELLENO) || (this.#valores[x,y+i] === letra);
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x+(i*this.#dimensionX)] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x+(i*this.#dimensionX)] === letra);
                     i++;
                 } while( i<palabra.length && isPosible )
                 break; 
             case eTipoDireccion.VERTICAL_ARR:
                 do {
                     const letra = palabra[i];
-                    isPosible = (this.#valores[x,y-i] === RELLENO) || (this.#valores[x,y-i] === letra);
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x-(i*this.#dimensionX)] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x-(i*this.#dimensionX)] === letra);
                     i++;
                 } while( i<palabra.length && isPosible )
                 break;
             case eTipoDireccion.DIAGONAL_DERABA:
+                do {
+                    const letra = palabra[i];
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x+i+(i*this.#dimensionX)] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x+i+(i*this.#dimensionX)] === letra);
+                    i++;
+                } while( i<palabra.length && isPosible )
                 break;
             case eTipoDireccion.DIAGONAL_DERARR:
+                do {
+                    const letra = palabra[i];
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x+i-(i*this.#dimensionX)] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x+i-(i*this.#dimensionX)] === letra);
+                    i++;
+                } while( i<palabra.length && isPosible )
                 break; 
             case eTipoDireccion.DIAGONAL_IZQABA:
+                do {
+                    const letra = palabra[i];
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x-i+(i*this.#dimensionX)] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x-i+(i*this.#dimensionX)] === letra);
+                    i++;
+                } while( i<palabra.length && isPosible )
                 break;
             case eTipoDireccion.DIAGONAL_IZQARR:
+                do {
+                    const letra = palabra[i];
+                    isPosible = (this.#valores[(y*this.#dimensionX)+x-i-(i*this.#dimensionX)] === RELLENO) || (this.#valores[(y*this.#dimensionX)+x-i-(i*this.#dimensionX)] === letra);
+                    i++;
+                } while( i<palabra.length && isPosible )
                 break;
         }
 
+        //(isPosible)?console.log(`----> esPosibleUbicarla( ${palabra}, ${direccion}, ${x}, ${y} ) Sin Colisión`):'';
         return isPosible;
 
     }
@@ -143,9 +171,6 @@ export class Tablero {
                 // añadimos por la derecha en la matriz, misma fila, incrementos de X
                 for (let i=0; i<palabra.length; i++) {
                     this.#valores[indicePrimeraLetra + i] = palabra[i];
-                    //this.#valores[miCoordenada.getX + i, miCoordenada.getY] = String(palabra[i]);
-                    //console.log(`>>>>> ASIGNANDO VALOR >>>>>>>>>   this.#valores[${miCoordenada.getX + i}, ${miCoordenada.getY}] = ${palabra[i]}`);
-                    console.log(`>>>>> ASIGNANDO VALOR >>>>>>>>>   this.#valores[${indicePrimeraLetra + i}] = ${palabra[i]}`);
                 }
                 break;
             case eTipoDireccion.HORIZONTAL_IZQ:
@@ -163,20 +188,30 @@ export class Tablero {
             case eTipoDireccion.VERTICAL_ARR:
                 // añadimos por encima en la matriz, misma columna, decrementos de Y
                 for (let i=0; i<palabra.length; i++) {
-                    this.#valores[indicePrimeraLetra + (i*this.#dimensionX)] = palabra[i];
+                    this.#valores[indicePrimeraLetra - (i*this.#dimensionX)] = palabra[i];
                 }
                 break;
             case eTipoDireccion.DIAGONAL_DERABA:
+                for (let i=0; i<palabra.length; i++) {
+                    this.#valores[indicePrimeraLetra + i + (i*this.#dimensionX)] = palabra[i];
+                }
                 break;
             case eTipoDireccion.DIAGONAL_DERARR:
+                for (let i=0; i<palabra.length; i++) {
+                    this.#valores[indicePrimeraLetra + i - (i*this.#dimensionX)] = palabra[i];
+                }
                 break; 
             case eTipoDireccion.DIAGONAL_IZQABA:
+                for (let i=0; i<palabra.length; i++) {
+                    this.#valores[indicePrimeraLetra - i + (i*this.#dimensionX)] = palabra[i];
+                }
                 break;
             case eTipoDireccion.DIAGONAL_IZQARR:
+                for (let i=0; i<palabra.length; i++) {
+                    this.#valores[indicePrimeraLetra - i - (i*this.#dimensionX)] = palabra[i];
+                }
                 break;
         }
-
-        console.log('valores: ' + this.#valores);
 
     }
 
@@ -197,39 +232,35 @@ export class Tablero {
         switch ( direccion ) {
             case eTipoDireccion.HORIZONTAL_DER:
                 // eliminamos las columnas por la derecha del tablero que no permitan ubicar la palabra por tamaño
-                console.log(`${this.#dimensionX} - ${longitud}, ${this.#dimensionY} - ${1} = ${this.#dimensionX - longitud}, ${this.#dimensionY - 1}`);
                 coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, 0, 0, Number(this.#dimensionX - longitud), Number(this.#dimensionY - 1) );
                 break;
             case eTipoDireccion.HORIZONTAL_IZQ:
                 // eliminamos las columnas por la izquierda del tablero que no permitan ubicar la palabra por tamaño
-                console.log(`${this.#dimensionX} - ${1}, ${this.#dimensionY} - ${1} = ${this.#dimensionX - 1}, ${this.#dimensionY - 1}`);
                 coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, longitud - 1, 0, Number(this.#dimensionX - 1), Number(this.#dimensionY - 1) );
                 break;
             case eTipoDireccion.VERTICAL_ABA:
                 // eliminamos las columnas por debajo del tablero que no permitan ubicar la palabra por tamaño
-                console.log(`${this.#dimensionX} - ${1}, ${this.#dimensionY} - ${longitud} = ${this.#dimensionX - 1}, ${this.#dimensionY - longitud}`);
                 coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, 0, 0, Number(this.#dimensionX - 1), Number(this.#dimensionY - longitud) );
                 break; 
             case eTipoDireccion.VERTICAL_ARR:
                 // eliminamos las columnas por arriba del tablero que no permitan ubicar la palabra por tamaño
-                console.log(`${this.#dimensionX} - ${1}, ${this.#dimensionY} - ${1} = ${this.#dimensionX - 1}, ${this.#dimensionY - 1}`);
                 coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, 0, longitud - 1, Number(this.#dimensionX - 1), Number(this.#dimensionY - 1) );
                 break;
             case eTipoDireccion.DIAGONAL_DERABA:
                 // eliminamos las columnas por la derecha y por debajo del tablero que no permitan ubicar la palabra por tamaño
-                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, 0, 0, this.#dimensionX - longitud, this.#dimensionY - longitud );
+                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, 0, 0, Number(this.#dimensionX - longitud), Number(this.#dimensionY - longitud) );
                 break;
             case eTipoDireccion.DIAGONAL_DERARR:
                 // eliminamos las columnas por la derecha y por arriba del tablero que no permitan ubicar la palabra por tamaño
-                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, 0, longitud - 1, this.#dimensionX - longitud, this.#dimensionY - 1 );
+                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, 0, Number(longitud - 1), Number(this.#dimensionX - longitud), Number(this.#dimensionY - 1) );
                 break; 
             case eTipoDireccion.DIAGONAL_IZQABA:
                 // eliminamos las columnas por la izquierda y por debajo del tablero que no permitan ubicar la palabra por tamaño
-                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, longitud - 1, 0, this.#dimensionX - 1, this.#dimensionY - longitud );
+                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, Number(longitud - 1), 0, Number(this.#dimensionX - 1), Number(this.#dimensionY - longitud) );
                 break;
             case eTipoDireccion.DIAGONAL_IZQARR:
                 // eliminamos las columnas por la izquierda y por arriba del tablero que no permitan ubicar la palabra por tamaño
-                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, longitud - 1, longitud - 1, this.#dimensionX - 1, this.#dimensionY - 1 );
+                coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, Number(longitud - 1), Number(longitud - 1), Number(this.#dimensionX - 1), Number(this.#dimensionY - 1) );
                 break;
         }
         console.log(' ------------ coordenadas -------------------- ');
@@ -244,9 +275,15 @@ export class Tablero {
                                    
             this.#addLetrasPalabra( String(palabra), direccion, miCoordenada );   
 
-            const elementTablero = document.querySelector( '#tablero' );
-            this.dibujarTablero( elementTablero );            
+            // const elementTablero = document.querySelector( '#tablero' );
+            // this.dibujarTablero( elementTablero );            
         }  
+        else {
+            console.log(' ****************** -------------------------------- ***************** ');
+            console.log(' ******************   C O L I S I O N    T O T A L   ***************** ');
+            console.log(' ****************** -------------------------------- ***************** ');
+        }
+        
         
         return this;
     }
@@ -263,10 +300,10 @@ export class Tablero {
      */
     ubicarListaPalabras( lista, horizontales, verticales ) {
 
-        console.log(`----> ubicarListaPalabras(${lista}, ${horizontales}, ${verticales})`);
+        console.log(`----> ubicarListaPalabras(${lista.numeroPalabras}, ${horizontales}, ${verticales})`);
 
         // si no hay suficientes elementos no se ubican las palabras
-        if( lista.longitud < (horizontales+verticales) ) return this;
+        if( lista.numeroPalabras < (horizontales+verticales) ) return this;
         
         let direccion = eTipoDireccion.HORIZONTAL_DER;
         let j = 0;
@@ -286,7 +323,7 @@ export class Tablero {
         }
         // diagonales
         direccion = eTipoDireccion.DIAGONAL_DERABA;
-        for( let i=1; i<=lista.longitud-(verticales+horizontales); i++ ) {            
+        for( let i=1; i<=lista.numeroPalabras-(verticales+horizontales); i++ ) {            
             this.#ubicarPalabra( lista.obtenerElementoPorPosicion( j ), direccion );
             switch( direccion ) {
                 case eTipoDireccion.DIAGONAL_DERARR:
@@ -310,41 +347,45 @@ export class Tablero {
 
     /**
     * Dibuja un tablero lleno de botones con las dimensiones especificadas en ancho x alto
-    * @param {HTMLDivElement} element 
     * @returns {HTMLDivElement} devuelve el div con el tablero dibujado
     */
-    dibujarTablero = ( element ) => {
+    dibujarTablero = () => {
 
         let html = "";
             
-        console.log(`----> dibujarTablero( ${element} )`);
-        console.log( 'valores: ' + this.#valores );
+        // console.log(`----> dibujarTablero( ${element} )`);
+        // console.log( 'valores: ' + this.#valores );
+        // html = `
+        // <table class="tablero">      
+        // `;
         html = `
-        <table class="tablero">      
+        <div class="tablero">      
         `;
         for ( let y = 0; y < this.#dimensionY; y++ ) {
-            html = html + '<tr class="filaTablero">';
+            html = html + '<div class="filaTablero">';
             for( let x = 0; x < this.#dimensionX; x++ ) {                    
                 //console.log( '(x,y) = ' + this.#valores[x, y] );
                 let valor = this.#valores[(this.#dimensionX*y)+x];
                 //let valor = this.#valores[x, y];
                 // console.log(`valores[x,y] = ${this.#valores[x, y]}`);
-                console.log(`valores[${this.#dimensionX}*${y}+${x}] = ${this.#valores[(this.#dimensionX*y)+x]}`);
+                //console.log(`valores[${this.#dimensionX}*${y}+${x}] = ${this.#valores[(this.#dimensionX*y)+x]}`);
                 //console.log({valor});
                 html = html + `
-                    <td class="columnaTablero">
+                    <div class="columnaTablero">
                         <div id="elem${x}_${y}" class="casilla">
-                        <span class="botonCasilla">${valor}</span>
+                            <span class="botonCasilla">${valor}</span>
                         </div>
-                    </td>
+                    </div>                    
                     `;                
             }
-            html = html + '</tr>';
+            html = html + '</div>';
+            html = html + '<div class="limpiarFlotantes"></div>';
         }
-        html = html + '</table>';
+        // html = html + '</table>';
+        html = html + '</div>';
     
-        element.innerHTML = html;
-        return element;
+        this.#elementTablero.innerHTML = html;
+        return this.#elementTablero;
     }
   
 
