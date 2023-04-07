@@ -87,3 +87,23 @@ h1 {
 .botonCasilla.botonCasillaAcertada {
   background: #646cff;
 }
+
+.marcador {
+  display: block;
+}
+
+.aciertos {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.fallos {
+  width: 33%;
+  float: left;
+}
+
+.puntos {
+  width: 33%;
+  float: left;
+}

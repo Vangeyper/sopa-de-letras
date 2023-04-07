@@ -68,3 +68,18 @@ export const nuevasPalabras = async( numeroPalabras ) => {
     return false;
   
   }
+
+
+  /**
+   * Devuelve cierto si ambas coordenadas forman una diagonal y son diferentes
+   * @param {Coordenada} miPto1 
+   * @param {Coordenada} miPto2 
+   * @returns {Boolean} 
+   */
+  export const isPalabraDiagonal = ( miPto1, miPto2 ) => {
+
+    if ( Math.abs( miPto2.getY - miPto1.getY ) === Math.abs( miPto2.getX - miPto1.getX ) )
+      return true;
+    return false;
+
+  }

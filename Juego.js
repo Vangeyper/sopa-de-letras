@@ -2,7 +2,8 @@ import { Tablero } from "./Tablero";
 import { ListaPalabras } from "./ListaPalabras";
 import { eTipoSopa } from "./tipos";
 import { Coordenada } from "./Coordenada";
-import { isPalabraHorizontal, isPalabraVertical } from "./utiles";
+import { isPalabraHorizontal, isPalabraVertical, isPalabraDiagonal } from "./utiles";
+import { Marcador } from "./Marcador";
 
 
 export class Juego {
@@ -26,6 +27,10 @@ export class Juego {
      */
     constructor( dimensionX, dimensionY, tipo, numeroPalabras, horizontales, verticales, miDocument ) {
        
+        // marcador 
+        let elementMarcador = miDocument.querySelector( '#marcador' );
+        this.#marcador = new Marcador( horizontales, verticales, Number(numeroPalabras - ( horizontales + verticales )), elementMarcador );      
+
         // lista de palabras        
         let elementLista = miDocument.querySelector( '#palabras' );
         this.#listaPalabras = new ListaPalabras( tipo, elementLista );      
@@ -164,6 +169,74 @@ export class Juego {
 
 
 
+    /**
+     * Marcará todas las letras o números que existan entre las dos coordenadas especificadas
+     * @param {Coordenada} miPto1 
+     * @param {Coordenada} miPto2 
+     * @returns {String} palabra que forman las coordenadas
+     */
+    #marcarPalabraDiagonalInvertida ( miPto1, miPto2 ) {
+
+        let aumentoY = 1;
+        let palabra = '';
+        
+        if ( Number( miPto2.getY ) < Number( miPto1.getY ) ) {
+            aumentoY = -1;
+        }
+    
+        let y = Number( miPto1.getY );
+        for( let x = Number( miPto1.getX ); x <= Number( miPto2.getX ) - 1; x++) {        
+            const item = '#elem' + x + '_' + y;    
+            const element = document.querySelector( item );
+            if ( element ) {
+                element.firstElementChild.classList.remove('botonCasillaSeleccion');
+                element.firstElementChild.classList.add('botonCasillaSeleccion');
+                palabra = palabra.concat(element.firstElementChild.innerText);
+            }
+            y = y + aumentoY;    
+        }
+
+        return palabra;
+    }    
+
+
+    /**
+     * Marcará todas las letras o números que existan entre las dos coordenadas especificadas
+     * @param {Coordenada} miPto1 
+     * @param {Coordenada} miPto2 
+     * @returns {String} palabra que forman las coordenadas
+     */
+    #marcarPalabraDiagonal ( miPto1, miPto2 ) {
+
+        let aumentoY = 1;
+        let palabra = '';
+        
+        if ( Number( miPto2.getY ) < Number( miPto1.getY ) ) {
+            aumentoY = -1;
+        }
+    
+        if( Number( miPto2.getX ) < Number( miPto1.getX ) ) {
+            this.#marcarPalabraDiagonalInvertida( miPto2, miPto1 );
+            return;
+        }
+    
+        let y = Number( miPto1.getY );
+        for( let x = Number( miPto1.getX ); x <= Number( miPto2.getX ); x++) {                    
+            const item = '#elem' + x + '_' + y;    
+            const element = document.querySelector( item );
+            if ( element ) {
+                element.firstElementChild.classList.remove('botonCasillaSeleccion');
+                element.firstElementChild.classList.add('botonCasillaSeleccion');
+                palabra = palabra.concat(element.firstElementChild.innerText);
+            }
+            y = y + aumentoY;
+        }
+
+        return palabra;
+        
+    }
+  
+
 
 
     /**
@@ -231,10 +304,9 @@ export class Juego {
         if ( isPalabraVertical( miPto1, miPto2 ) ) {
             palabra = this.#marcarPalabraVertical( miPto1, miPto2 );
         }
-        // if ( isPalabraDiagonal( x1, y1, x2, y2 ) ) {
-        // //console.log(x1 + ',' + y1 + ' - ' + x2 + ',' + y2 + 'es diagonal');
-        // marcarPalabraDiagonal( x1, y1, x2, y2 );
-        // }
+        if ( isPalabraDiagonal( miPto1, miPto2 ) ) {
+            palabra = this.#marcarPalabraDiagonal( miPto1, miPto2 );
+        }
     
         // comprobar si existe la palabra
         console.log({palabra});
@@ -259,6 +331,7 @@ export class Juego {
         
         this.#listaPalabras.dibujarLista();
         this.#tablero.dibujarTablero();
+        this.#marcador.dibujarMarcador();
 
     }
 
