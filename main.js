@@ -7,6 +7,8 @@ import { Juego } from './Juego';
 import { ListaPalabras } from './ListaPalabras';
 import { Tablero } from './Tablero';
 
+import { nuevasPalabras } from "./utiles";
+
 /* ----------------------- */
 /* CONSTANTES y ENUMERADOS */
 /* ----------------------- */
@@ -399,7 +401,24 @@ const generarTablero = ( ancho, alto, tipo ) => {
 
 
 const elementJuego = document.querySelector( '#juego' );
-const juego = new Juego( 20, 20, eTipoSopa.NUMEROS, 12, 4, 4, document );
+
+
+// nuevasPalabras( 12 ).then( (listaPalabras) => { 
+//   console.log('LISTA COMPLETA:  ' + listaPalabras);
+//   console.log('longitud: ' + listaPalabras.length);
+// });
+
+
+
+
+
+
+const juego = new Juego( 20, 20, eTipoSopa.LETRAS, 4, 4, 4, document );
+
+juego.obtenerListaPalabras(4);
+juego.ubicarPalabras( 2, 2 );
+
+
 
 // listaPalabras.dibujarLista ( elementLista );
 // tablero.dibujarTablero( elementTablero );

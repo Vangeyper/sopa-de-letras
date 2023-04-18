@@ -89,21 +89,26 @@ h1 {
 }
 
 .marcador {
-  display: block;
+  display: inline;
 }
 
 .aciertos {
-  width: auto;
+  display: inline;
+  width: 150px;
   margin: 0;
   padding: 0;
 }
 
 .fallos {
-  width: 33%;
-  float: left;
+  display: inline;
+  width: 150px;
 }
 
 .puntos {
-  width: 33%;
-  float: left;
+  display: inline;
+  width: 150px;
+}
+
+h3 {
+  display: inline;
 }

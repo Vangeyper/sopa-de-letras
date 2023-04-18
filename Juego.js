@@ -25,7 +25,7 @@ export class Juego {
      * @param {Document} miDocument
      * //@param {HTMLDivElement} elementJuego DIV que incluye todos los elementos del juego y del que cuelgan los div de tablero, lista y marcador 
      */
-    constructor( dimensionX, dimensionY, tipo, numeroPalabras, horizontales, verticales, miDocument ) {
+    constructor ( dimensionX, dimensionY, tipo, numeroPalabras, horizontales, verticales, miDocument ) {
        
         // marcador 
         let elementMarcador = miDocument.querySelector( '#marcador' );
@@ -33,18 +33,20 @@ export class Juego {
 
         // lista de palabras        
         let elementLista = miDocument.querySelector( '#palabras' );
-        this.#listaPalabras = new ListaPalabras( tipo, elementLista );      
-        this.#listaPalabras = this.#listaPalabras.generarLista( numeroPalabras );
+        this.#listaPalabras = new ListaPalabras( tipo, elementLista );  
 
+        //this.#listaPalabras = this.#listaPalabras.generarLista( numeroPalabras );
+        //console.log('this.#listaPalabras : ' + this.#listaPalabras);
+        
         // tablero de juego
         let elementTablero = miDocument.querySelector( '#tablero' );
         this.#tablero = new Tablero( dimensionX, dimensionY, tipo, elementTablero );
-        this.#tablero = this.#tablero.ubicarListaPalabras( this.#listaPalabras, horizontales, verticales );
+        // this.#tablero = this.#tablero.ubicarListaPalabras( this.#listaPalabras, horizontales, verticales );
 
         // no tenemos nada seleccionado
         this.#casillaSeleccionada = undefined;
 
-        this.dibujarJuego()             
+        // this.dibujarJuego()             
 
         
         
@@ -80,6 +82,36 @@ export class Juego {
 
     }
     
+
+
+    /**
+     * Obtiene la lista de palabras o numeros
+     * @param {Number} numeroPalabras 
+     * @returns {ListaPalabras}
+     */
+    async obtenerListaPalabras( numeroPalabras ) {
+
+        this.#listaPalabras = await this.#listaPalabras.generarLista( numeroPalabras );
+        console.log('this.#listaPalabras : ' + this.#listaPalabras);
+        return this.#listaPalabras;
+
+    }
+
+
+    /**
+     * ubica las palabras de la lista en el tablero
+     * @param {Number} horizontales 
+     * @param {Number} verticales 
+     * @returns {Juego}
+     */
+    ubicarPalabras( horizontales, verticales ) {
+
+        this.#tablero = this.#tablero.ubicarListaPalabras( this.#listaPalabras, horizontales, verticales );
+        this.dibujarJuego();
+    }
+    
+
+
 
 
     /**
@@ -185,7 +217,7 @@ export class Juego {
         }
     
         let y = Number( miPto1.getY );
-        for( let x = Number( miPto1.getX ); x <= Number( miPto2.getX ) - 1; x++) {        
+        for( let x = Number( miPto1.getX ); x <= Number( miPto2.getX ); x++) {        
             const item = '#elem' + x + '_' + y;    
             const element = document.querySelector( item );
             if ( element ) {
@@ -216,8 +248,7 @@ export class Juego {
         }
     
         if( Number( miPto2.getX ) < Number( miPto1.getX ) ) {
-            this.#marcarPalabraDiagonalInvertida( miPto2, miPto1 );
-            return;
+            return this.#marcarPalabraDiagonalInvertida( miPto2, miPto1 );
         }
     
         let y = Number( miPto1.getY );

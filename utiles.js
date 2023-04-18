@@ -23,19 +23,15 @@ export const aleatorio = (inferior, superior) => {
 /**
  * Devuelve un array de palabras formado por tantas palabras como se indique en el parámetro numeroPalabras
  * @param {Number} numeroPalabras 
- * @returns {Array<String>} Nuevas palabras
+ * @returns {Promise<Array<String>>} Nuevas palabras
  */
 export const nuevasPalabras = async( numeroPalabras ) => {
 
-    let listaPalabras = [];
-    
     const url = `https://clientes.api.greenborn.com.ar/public-random-word?c=${numeroPalabras}`;
     const res = await fetch( url );
-  
-    listaPalabras = res.json();
-    
+    const listaPalabras = await res.json();
     return listaPalabras;
-  
+    
   }
 
 
