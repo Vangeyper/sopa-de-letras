@@ -415,8 +415,7 @@ const elementJuego = document.querySelector( '#juego' );
 
 const juego = new Juego( 20, 20, eTipoSopa.LETRAS, 4, 4, 4, document );
 
-juego.obtenerListaPalabras(4);
-juego.ubicarPalabras( 2, 2 );
+
 
 
 

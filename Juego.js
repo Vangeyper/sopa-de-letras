@@ -35,6 +35,12 @@ export class Juego {
         let elementLista = miDocument.querySelector( '#palabras' );
         this.#listaPalabras = new ListaPalabras( tipo, elementLista );  
 
+        this.obtenerListaPalabras(numeroPalabras)
+            .then(() => {
+                this.ubicarPalabras( horizontales, verticales );
+            });
+
+
         //this.#listaPalabras = this.#listaPalabras.generarLista( numeroPalabras );
         //console.log('this.#listaPalabras : ' + this.#listaPalabras);
         
@@ -87,7 +93,7 @@ export class Juego {
     /**
      * Obtiene la lista de palabras o numeros
      * @param {Number} numeroPalabras 
-     * @returns {ListaPalabras}
+     * @returns {Promise<ListaPalabras>}
      */
     async obtenerListaPalabras( numeroPalabras ) {
 
