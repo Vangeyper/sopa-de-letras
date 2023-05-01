@@ -114,9 +114,9 @@ export class Marcador {
         const acertadas = this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;
         const puntos = acertadas - this.#fallidos;
 
-        html = html + '<div class="aciertos"><h3>A C E R T A D A S : ' + acertadas + '</h3></div>';
-        html = html + '<div class="fallos"><h3>F A L L O S : ' + this.#fallidos + '</h3></div>';
-        html = html + '<div class="puntos"><h3>P U N T U A C I Ó N : ' + puntos + '</h3></div>';
+        html = html + '<div class="flex-item aciertos"><h3>A C E R T A D A S : ' + acertadas + '</h3></div>';
+        html = html + '<div class="flex-item fallos"><h3>F A L L O S : ' + this.#fallidos + '</h3></div>';
+        html = html + '<div class="flex-item puntos"><h3>P U N T U A C I Ó N : ' + puntos + '</h3></div>';
 
         html = html + '</div>';
         this.#elementMarcador.innerHTML = html;

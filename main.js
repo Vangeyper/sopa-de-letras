@@ -413,7 +413,7 @@ const elementJuego = document.querySelector( '#juego' );
 
 
 
-const juego = new Juego( 20, 20, eTipoSopa.LETRAS, 4, 4, 4, document );
+const juego = new Juego( 30, 20, eTipoSopa.NUMEROS, 12, 4, 4, document );
 
 
 

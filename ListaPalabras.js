@@ -38,11 +38,11 @@ export class ListaPalabras {
      */
     obtenerElementoPorPosicion( posicion ) {
 
-        console.log(`obtenerElementoPorPosicion(${posicion})`);
-        console.log('de lista: ' + this.#lista);
-        console.log('this.#lista.length: ' + this.#lista.length);
+        // console.log(`obtenerElementoPorPosicion(${posicion})`);
+        // console.log('de lista: ' + this.#lista);
+        // console.log('this.#lista.length: ' + this.#lista.length);
         if( this.#lista.length >= posicion ) {
-            console.log('ELEMENTO : this.#lista[posicion]: ' + this.#lista[posicion]);
+            // console.log('ELEMENTO : this.#lista[posicion]: ' + this.#lista[posicion]);
             return this.#lista[posicion];
         }
         return undefined
@@ -204,8 +204,8 @@ export class ListaPalabras {
     generarLista = async( numero, min = 100000000, max = 999999999 ) => {
         
         console.log( 'generarLista()' );
-        console.log( 'tipo: ' + this.#tipo );
-        console.log( 'numero de palabras: ' + numero );
+        // console.log( 'tipo: ' + this.#tipo );
+        // console.log( 'numero de palabras: ' + numero );
         this.#lista = [];
         this.#marcadas = [];
     
@@ -219,13 +219,13 @@ export class ListaPalabras {
             if ( this.#tipo === eTipoSopa.LETRAS ) {
                 const listaPalabras = await nuevasPalabras( numero );
                 for ( let n = 0; n < listaPalabras.length; n++ ) {
-                    console.log('this.#lista : ' + this.#lista);
-                    console.log('elemento de la lista (' + n + ') : ' + listaPalabras[n]);
-                    console.log('añadimos la palabra');
+                    // console.log('this.#lista : ' + this.#lista);
+                    // console.log('elemento de la lista (' + n + ') : ' + listaPalabras[n]);
+                    // console.log('añadimos la palabra');
                     this.#addPalabra( listaPalabras[n] ); 
-                    console.log('this.#lista : ' + this.#lista); 
+                    // console.log('this.#lista : ' + this.#lista); 
                 };
-                console.log('Objeto lista: ' + this);
+                // console.log('Objeto lista: ' + this);
                 return this;
                 // nuevasPalabras( numero ).then(
                 //     listaPalabras => {

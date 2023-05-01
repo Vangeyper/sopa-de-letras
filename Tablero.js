@@ -139,7 +139,7 @@ export class Tablero {
 
         let listaOpciones = [];
 
-        console.log(`----> opcionesParaUbicarPalabra( ${palabra}, ${direccion}, ${xInicio}, ${yInicio}, ${xFinal}, ${yFinal} )`);        
+        // console.log(`----> opcionesParaUbicarPalabra( ${palabra}, ${direccion}, ${xInicio}, ${yInicio}, ${xFinal}, ${yFinal} )`);        
         for( let y=yInicio; y<=yFinal; y++ ) {
             for( let x=xInicio; x<=xFinal; x++ ) {
                 if( this.#esPosibleUbicarla( palabra, direccion, x, y ) ) {
@@ -163,7 +163,7 @@ export class Tablero {
      */
     #addLetrasPalabra( palabra, direccion, miCoordenada ) {
 
-        console.log(`----> addLetrasPalabra( ${palabra}, ${direccion}, ${miCoordenada.getX}, ${miCoordenada.getY} )`);
+        // console.log(`----> addLetrasPalabra( ${palabra}, ${direccion}, ${miCoordenada.getX}, ${miCoordenada.getY} )`);
         const indicePrimeraLetra = (this.#dimensionX * miCoordenada.getY) + miCoordenada.getX;
         
         switch ( direccion ) {
@@ -225,7 +225,7 @@ export class Tablero {
      */
     #ubicarPalabra( palabra, direccion ) {
 
-        console.log(`----> ubicarPalabra(${palabra}, ${direccion})`);
+        // console.log(`----> ubicarPalabra(${palabra}, ${direccion})`);
         const longitud = palabra.length;
         let coordenadasPosibles = [];
 
@@ -263,15 +263,15 @@ export class Tablero {
                 coordenadasPosibles = this.#opcionesParaUbicarPalabra( palabra, direccion, Number(longitud - 1), Number(longitud - 1), Number(this.#dimensionX - 1), Number(this.#dimensionY - 1) );
                 break;
         }
-        console.log(' ------------ coordenadas -------------------- ');
-        console.log({coordenadasPosibles});
+        // console.log(' ------------ coordenadas -------------------- ');
+        // console.log({coordenadasPosibles});
         if ( coordenadasPosibles && coordenadasPosibles.length > 0 ) {
             const miIndice = aleatorio ( 0, coordenadasPosibles.length - 1 );            
             const miCoordenada = coordenadasPosibles[miIndice]; 
             // miCoordenada.setX( 1 );
             // miCoordenada.setY( 1 );            
 
-            console.log('UBICAMOS EN : ' + {miIndice}, {miCoordenada})
+            // console.log('UBICAMOS EN : ' + {miIndice}, {miCoordenada})
                                    
             this.#addLetrasPalabra( String(palabra), direccion, miCoordenada );   
 
@@ -279,9 +279,9 @@ export class Tablero {
             // this.dibujarTablero( elementTablero );            
         }  
         else {
-            console.log(' ****************** -------------------------------- ***************** ');
-            console.log(' ******************   C O L I S I O N    T O T A L   ***************** ');
-            console.log(' ****************** -------------------------------- ***************** ');
+            // console.log(' ****************** -------------------------------- ***************** ');
+            // console.log(' ******************   C O L I S I O N    T O T A L   ***************** ');
+            // console.log(' ****************** -------------------------------- ***************** ');
         }
         
         
@@ -300,7 +300,7 @@ export class Tablero {
      */
     ubicarListaPalabras( lista, horizontales, verticales ) {
 
-        console.log(`----> ubicarListaPalabras(${lista.numeroPalabras}, ${horizontales}, ${verticales})`);
+        // console.log(`----> ubicarListaPalabras(${lista.numeroPalabras}, ${horizontales}, ${verticales})`);
 
         // si no hay suficientes elementos no se ubican las palabras
         if( lista.numeroPalabras < (horizontales+verticales) ) return this;
@@ -309,7 +309,7 @@ export class Tablero {
         let j = 0;
         // horizontales
         for( let i=1; i<=horizontales; i++ ) {  
-            console.log('POSICION: ' + j, lista.obtenerElementoPorPosicion( j ), direccion);
+            // console.log('POSICION: ' + j, lista.obtenerElementoPorPosicion( j ), direccion);
             this.#ubicarPalabra( lista.obtenerElementoPorPosicion( j ), direccion );
             direccion = (direccion === eTipoDireccion.HORIZONTAL_DER) ? eTipoDireccion.HORIZONTAL_IZQ : eTipoDireccion.HORIZONTAL_DER;
             j++;

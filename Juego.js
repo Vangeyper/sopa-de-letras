@@ -35,57 +35,53 @@ export class Juego {
         let elementLista = miDocument.querySelector( '#palabras' );
         this.#listaPalabras = new ListaPalabras( tipo, elementLista );  
 
+        // tablero de juego
+        let elementTablero = miDocument.querySelector( '#tablero' );
+        this.#tablero = new Tablero( dimensionX, dimensionY, tipo, elementTablero );
+        // no tenemos nada seleccionado
+        this.#casillaSeleccionada = undefined;
+
         this.obtenerListaPalabras(numeroPalabras)
             .then(() => {
                 this.ubicarPalabras( horizontales, verticales );
+
+                // eventos
+                elementTablero.addEventListener('click', ( event ) => {
+
+                    console.log(' ---->> tableroSelectListener');
+                    const element = event.target.closest('.casilla');
+                    if ( !element ) return;  
+                
+                    // si tenemos el click correspondiente al Select cogemos el data-id:
+                    const id = element.getAttribute('id');
+                    // console.log({id});
+                    
+                    // seleccionamos la casilla inicial o la final
+                    if( this.#casillaSeleccionada ) {
+                        // marcamos el final de la palabra
+                        //element.firstElementChild.classList.toggle('botonCasillaSeleccion');
+                        this.#marcarPalabra( this.#casillaSeleccionada, id );
+                        // marcamos/tachamos las letras intermedias si la palabra es correcta
+                        this.#casillaSeleccionada = undefined;
+                    }
+                    else {
+                        // iniciamos palabra
+                        this.#casillaSeleccionada = id;
+                        // marcamos el inicio de palabra
+                        element.firstElementChild.classList.toggle('botonCasillaSeleccion');
+                    }
+
+                    // console.log(this.#casillaSeleccionada);
+                });
+
             });
 
 
         //this.#listaPalabras = this.#listaPalabras.generarLista( numeroPalabras );
         //console.log('this.#listaPalabras : ' + this.#listaPalabras);
         
-        // tablero de juego
-        let elementTablero = miDocument.querySelector( '#tablero' );
-        this.#tablero = new Tablero( dimensionX, dimensionY, tipo, elementTablero );
         // this.#tablero = this.#tablero.ubicarListaPalabras( this.#listaPalabras, horizontales, verticales );
-
-        // no tenemos nada seleccionado
-        this.#casillaSeleccionada = undefined;
-
-        // this.dibujarJuego()             
-
-        
-        
-        // eventos
-
-        elementTablero.addEventListener('click', ( event ) => {
-
-            console.log(' ---->> tableroSelectListener');
-            const element = event.target.closest('.casilla');
-            if ( !element ) return;  
-        
-            // si tenemos el click correspondiente al Select cogemos el data-id:
-            const id = element.getAttribute('id');
-            console.log({id});
-            
-            // seleccionamos la casilla inicial o la final
-            if( this.#casillaSeleccionada ) {
-                // marcamos el final de la palabra
-                //element.firstElementChild.classList.toggle('botonCasillaSeleccion');
-                this.#marcarPalabra( this.#casillaSeleccionada, id );
-                // marcamos/tachamos las letras intermedias si la palabra es correcta
-                this.#casillaSeleccionada = undefined;
-            }
-            else {
-                // iniciamos palabra
-                this.#casillaSeleccionada = id;
-                // marcamos el inicio de palabra
-                element.firstElementChild.classList.toggle('botonCasillaSeleccion');
-            }
-
-            console.log(this.#casillaSeleccionada);
-        });
-
+    
     }
     
 
@@ -98,7 +94,7 @@ export class Juego {
     async obtenerListaPalabras( numeroPalabras ) {
 
         this.#listaPalabras = await this.#listaPalabras.generarLista( numeroPalabras );
-        console.log('this.#listaPalabras : ' + this.#listaPalabras);
+        // console.log('this.#listaPalabras : ' + this.#listaPalabras);
         return this.#listaPalabras;
 
     }
@@ -158,7 +154,7 @@ export class Juego {
     
         for( let x = Number(miPto1.getX); x <= Number(miPto2.getX); x++) {
             const item = '#elem' + x + '_' + miPto1.getY;
-            console.log(item);
+            // console.log(item);
             const element = document.querySelector( item );
             if (element) {
                 element.firstElementChild.classList.remove('botonCasillaSeleccion');
@@ -283,9 +279,9 @@ export class Juego {
 
         var seleccionados = document.getElementsByClassName("botonCasillaSeleccion");
         
-        console.log(seleccionados.length);
+        // console.log(seleccionados.length);
         for (let i = seleccionados.length - 1; i >= 0; i--) {
-            console.log(seleccionados[i]);
+            // console.log(seleccionados[i]);
             seleccionados[i].classList.add("botonCasillaAcertada");
             seleccionados[i].classList.remove("botonCasillaSeleccion");
         }
@@ -297,16 +293,16 @@ export class Juego {
      */
     #desmarcarSeleccionados () {
 
-        console.log('descamarcar');
+        // console.log('descamarcar');
         var seleccionados = document.getElementsByClassName("botonCasillaSeleccion");  
         if (!seleccionados) return;
         
-        console.log( 'seleccionados a desmarcar : ' + seleccionados.length );
-        console.log( seleccionados[0], seleccionados[1], seleccionados[2] );
-        console.log( seleccionados[0].parentElement, seleccionados[1].parentElement, seleccionados[2].parentElement );
+        // console.log( 'seleccionados a desmarcar : ' + seleccionados.length );
+        // console.log( seleccionados[0], seleccionados[1], seleccionados[2] );
+        // console.log( seleccionados[0].parentElement, seleccionados[1].parentElement, seleccionados[2].parentElement );
 
         for (let i = seleccionados.length - 1; i >= 0; i--) {
-            console.log( 'desmarcamos ' + seleccionados[i].parentElement.id );
+            // console.log( 'desmarcamos ' + seleccionados[i].parentElement.id );
             seleccionados[i].classList.remove("botonCasillaSeleccion");
         }
     }
@@ -346,7 +342,7 @@ export class Juego {
         }
     
         // comprobar si existe la palabra
-        console.log({palabra});
+        // console.log({palabra});
         if( this.#listaPalabras.validarPalabra( palabra )) {
             this.#listaPalabras.marcarPalabra( palabra );
             this.#aplicarMarcadoPalabraCorrecta();            

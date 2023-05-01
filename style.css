@@ -89,24 +89,24 @@ h1 {
 }
 
 .marcador {
-  display: inline;
+  display: flex;
+  margin-right: 25%;
+  padding: 10px;
+}
+
+.flex-item {
+  background: burlywood;
+  width: 33%;
+  padding: 10px;
 }
 
 .aciertos {
-  display: inline;
-  width: 150px;
-  margin: 0;
-  padding: 0;
 }
 
 .fallos {
-  display: inline;
-  width: 150px;
 }
 
 .puntos {
-  display: inline;
-  width: 150px;
 }
 
 h3 {
