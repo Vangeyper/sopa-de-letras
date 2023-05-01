@@ -90,14 +90,14 @@ h1 {
 
 .marcador {
   display: flex;
-  margin-right: 25%;
-  padding: 10px;
+  max-width: 650px;
+  padding: 5px;
 }
 
 .flex-item {
   background: burlywood;
   width: 33%;
-  padding: 10px;
+  padding: 5px;
 }
 
 .aciertos {
@@ -109,6 +109,3 @@ h1 {
 .puntos {
 }
 
-h3 {
-  display: inline;
-}
