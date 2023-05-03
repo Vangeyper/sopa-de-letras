@@ -1,6 +1,6 @@
 import { Tablero } from "./Tablero";
 import { ListaPalabras } from "./ListaPalabras";
-import { eTipoSopa } from "./tipos";
+import { eTipoDireccion, eTipoSopa } from "./tipos";
 import { Coordenada } from "./Coordenada";
 import { isPalabraHorizontal, isPalabraVertical, isPalabraDiagonal } from "./utiles";
 import { Marcador } from "./Marcador";
@@ -318,6 +318,7 @@ export class Juego {
 
         console.log(` ---->> marcarPalabra( ${inicioID}, ${finalID} )`);
         let palabra = '';
+        let tipus; // indicará el tipus de palabra per després contabilitzar 
     
         // var seleccionados = document.getElementsByClassName("botonCasillaSeleccion");
         // console.log( 'seleccionados : ' + seleccionados.length );
@@ -333,21 +334,38 @@ export class Juego {
            
         if ( isPalabraHorizontal( miPto1, miPto2 ) ) {
             palabra = this.#marcarPalabraHorizontal( miPto1, miPto2 );        
+            tipus = 'h';
         }
         if ( isPalabraVertical( miPto1, miPto2 ) ) {
             palabra = this.#marcarPalabraVertical( miPto1, miPto2 );
+            tipus = 'v';
         }
         if ( isPalabraDiagonal( miPto1, miPto2 ) ) {
             palabra = this.#marcarPalabraDiagonal( miPto1, miPto2 );
+            tipus = 'd';
         }
     
         // comprobar si existe la palabra
         // console.log({palabra});
         if( this.#listaPalabras.validarPalabra( palabra )) {
+            switch (tipus) {
+                case 'h':
+                    this.#marcador.acertarHorizontal();
+                    break;
+                case 'v': 
+                    this.#marcador.acertarVertical();
+                    break;
+                case 'd':
+                    this.#marcador.acertarDiagonal();
+                    break;
+            }
             this.#listaPalabras.marcarPalabra( palabra );
             this.#aplicarMarcadoPalabraCorrecta();            
             this.#listaPalabras.dibujarLista();
             return;
+        }
+        else {
+            this.#marcador.fallar();
         }
         
         this.#desmarcarSeleccionados();        

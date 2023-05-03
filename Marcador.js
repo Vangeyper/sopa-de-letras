@@ -78,6 +78,7 @@ export class Marcador {
     acertarHorizontal() {
 
         this.#horizontalesAcertadas++;
+        this.dibujarMarcador();
         return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;
 
     }
@@ -90,6 +91,7 @@ export class Marcador {
     acertarVertical() {
 
         this.#verticalesAcertadas++;
+        this.dibujarMarcador();
         return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;
 
     }
@@ -102,9 +104,27 @@ export class Marcador {
     acertarDiagonal() {
 
         this.#diagonalesAcertadas++;
-        return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;
+        this.dibujarMarcador();
+        return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;        
 
     }
+
+
+    /**
+     * añade un fallo
+     * @returns {Number} total de fallos hasta el momento
+     */
+    fallar() {
+
+        this.#fallidos++;
+        this.dibujarMarcador();
+        return this.#fallidos;        
+    
+    }
+
+
+    
+    
 
 
     dibujarMarcador() {
