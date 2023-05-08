@@ -54,8 +54,8 @@ export class Juego {
                 
                     // si tenemos el click correspondiente al Select cogemos el data-id:
                     const id = element.getAttribute('id');
-                    // console.log({id});
-                    
+                    // console.log({id});                                        
+
                     // seleccionamos la casilla inicial o la final
                     if( this.#casillaSeleccionada ) {
                         // marcamos el final de la palabra
@@ -65,10 +65,13 @@ export class Juego {
                         this.#casillaSeleccionada = undefined;
                     }
                     else {
+                        // sonido de inicio de palabra                    
+                        const snd = new Audio("./public/sounds/IPal.wav");
+                        snd.play();
                         // iniciamos palabra
                         this.#casillaSeleccionada = id;
                         // marcamos el inicio de palabra
-                        element.firstElementChild.classList.toggle('botonCasillaSeleccion');
+                        element.firstElementChild.classList.toggle('botonCasillaSeleccion');                        
                     }
 
                     // console.log(this.#casillaSeleccionada);

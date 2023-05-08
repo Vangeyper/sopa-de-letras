@@ -70,6 +70,17 @@ export class Marcador {
     }
 
 
+    /**
+     * añade un nuevo acierto
+     * @returns {Number} total de aciertos hasta el momento
+     */
+    acertar() {
+        // sonido de acierto
+        const snd = new Audio("./public/sounds/Acierto.wav");
+        snd.play();
+        this.dibujarMarcador();
+        return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;
+    }
 
     /**
      * añade un nuevo acierto para las horizontales
@@ -78,9 +89,7 @@ export class Marcador {
     acertarHorizontal() {
 
         this.#horizontalesAcertadas++;
-        this.dibujarMarcador();
-        return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;
-
+        return this.acertar();
     }
 
 
@@ -91,9 +100,7 @@ export class Marcador {
     acertarVertical() {
 
         this.#verticalesAcertadas++;
-        this.dibujarMarcador();
-        return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;
-
+        return this.acertar();
     }
 
 
@@ -104,9 +111,7 @@ export class Marcador {
     acertarDiagonal() {
 
         this.#diagonalesAcertadas++;
-        this.dibujarMarcador();
-        return this.#horizontalesAcertadas + this.#verticalesAcertadas + this.#diagonalesAcertadas;        
-
+        return this.acertar();
     }
 
 
@@ -115,6 +120,10 @@ export class Marcador {
      * @returns {Number} total de fallos hasta el momento
      */
     fallar() {
+
+        // sonido de fallo
+        const snd = new Audio("./public/sounds/Fallo.wav");
+        snd.play();
 
         this.#fallidos++;
         this.dibujarMarcador();
