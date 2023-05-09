@@ -1,4 +1,4 @@
-import './style.css';
+import '../style.css';
 import { eTipoSopa } from './tipos';
 import { aleatorio } from './utiles';
 import { Juego } from './Juego';

@@ -5,7 +5,7 @@ h1 {
 
 
 
-
+/* 
 .filaTablero {
   float: left;
 }
@@ -107,5 +107,21 @@ h1 {
 }
 
 .puntos {
+} */
+
+
+
+
+/* con grid-container */
+
+:root {
+  --dimensionX: 15; 
+  --dimensionY: 13;
 }
 
+
+.grid-container {
+    display: grid;
+    grid-template-rows: repeat( --dimensionY, 1fr );
+    grid-template-columns: repeat( --dimensionX, 1fr );
+}

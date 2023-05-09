@@ -2,6 +2,7 @@ import { eTipoSopa, eTipoDireccion } from "./tipos";
 import { Coordenada } from "./Coordenada";
 import { ListaPalabras } from './ListaPalabras';
 import { aleatorio } from "./utiles";
+import { gui_dibujarTablero_Grid } from "./gui/gui-util";
 
 const RELLENO = '-';
 
@@ -345,48 +346,59 @@ export class Tablero {
         return this;
     }
 
+
     /**
     * Dibuja un tablero lleno de botones con las dimensiones especificadas en ancho x alto
     * @returns {HTMLDivElement} devuelve el div con el tablero dibujado
     */
     dibujarTablero = () => {
 
-        let html = "";
-            
-        // console.log(`----> dibujarTablero( ${element} )`);
-        // console.log( 'valores: ' + this.#valores );
-        // html = `
-        // <table class="tablero">      
-        // `;
-        html = `
-        <div class="tablero">      
-        `;
-        for ( let y = 0; y < this.#dimensionY; y++ ) {
-            html = html + '<div class="filaTablero">';
-            for( let x = 0; x < this.#dimensionX; x++ ) {                    
-                //console.log( '(x,y) = ' + this.#valores[x, y] );
-                let valor = this.#valores[(this.#dimensionX*y)+x];
-                //let valor = this.#valores[x, y];
-                // console.log(`valores[x,y] = ${this.#valores[x, y]}`);
-                //console.log(`valores[${this.#dimensionX}*${y}+${x}] = ${this.#valores[(this.#dimensionX*y)+x]}`);
-                //console.log({valor});
-                html = html + `
-                    <div class="columnaTablero">
-                        <div id="elem${x}_${y}" class="casilla">
-                            <span class="botonCasilla">${valor}</span>
-                        </div>
-                    </div>                    
-                    `;                
-            }
-            html = html + '</div>';
-            html = html + '<div class="limpiarFlotantes"></div>';
-        }
-        // html = html + '</table>';
-        html = html + '</div>';
-    
-        this.#elementTablero.innerHTML = html;
-        return this.#elementTablero;
+        return gui_dibujarTablero_Grid( this.#elementTablero, this.#dimensionX, this.#dimensionY, this.#valores );
     }
+
+
+    // /**
+    // * Dibuja un tablero lleno de botones con las dimensiones especificadas en ancho x alto
+    // * @returns {HTMLDivElement} devuelve el div con el tablero dibujado
+    // */
+    // dibujarTablero = () => {
+        
+    //     let html = "";
+            
+    //     // console.log(`----> dibujarTablero( ${element} )`);
+    //     // console.log( 'valores: ' + this.#valores );
+    //     // html = `
+    //     // <table class="tablero">      
+    //     // `;
+    //     html = `
+    //     <div class="tablero">      
+    //     `;
+    //     for ( let y = 0; y < this.#dimensionY; y++ ) {
+    //         html = html + '<div class="filaTablero">';
+    //         for( let x = 0; x < this.#dimensionX; x++ ) {                    
+    //             //console.log( '(x,y) = ' + this.#valores[x, y] );
+    //             let valor = this.#valores[(this.#dimensionX*y)+x];
+    //             //let valor = this.#valores[x, y];
+    //             // console.log(`valores[x,y] = ${this.#valores[x, y]}`);
+    //             //console.log(`valores[${this.#dimensionX}*${y}+${x}] = ${this.#valores[(this.#dimensionX*y)+x]}`);
+    //             //console.log({valor});
+    //             html = html + `
+    //                 <div class="columnaTablero">
+    //                     <div id="elem${x}_${y}" class="casilla">
+    //                         <span class="botonCasilla">${valor}</span>
+    //                     </div>
+    //                 </div>                    
+    //                 `;                
+    //         }
+    //         html = html + '</div>';
+    //         html = html + '<div class="limpiarFlotantes"></div>';
+    //     }
+    //     // html = html + '</table>';
+    //     html = html + '</div>';
+    
+    //     this.#elementTablero.innerHTML = html;
+    //     return this.#elementTablero;
+    // }
   
 
 }
